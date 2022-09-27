@@ -3,6 +3,7 @@
     public enum ApplicationStatus
     {
         New,
+        Submitted,
         Approved,
         Rejected
     }
