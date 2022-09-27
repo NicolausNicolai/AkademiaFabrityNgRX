@@ -11,6 +11,16 @@ export class ApplicationApiService {
 
   getApplications()
   {
-    return this.http.get<Array<Application>>("https://localhost:58268/api/Application/get-applications")
+    return this.http.get<Array<Application>>("https://localhost:58268/api/Application/get-applications");
+  }
+
+  getApplication(id: number)
+  {
+    return this.http.get<Array<Application>>(`https://localhost:58268/api/Application/get-applications?id=${id}`);
+  }
+
+  saveApplication(application: Partial<Application>)
+  {
+    return this.http.post<Application>("https://localhost:58268/api/Application/add-new-application", application);
   }
 }

@@ -85,10 +85,10 @@
       <div class="row">
         <div class="col">
           <mat-radio-group formControlName="applicationStatus">
-            <mat-radio-button value="New">New</mat-radio-button>
-            <mat-radio-button value="Submitted">Submitted</mat-radio-button>
-            <mat-radio-button value="Approved">Approved</mat-radio-button>
-            <mat-radio-button value="Rejected">Rejected</mat-radio-button>
+            <mat-radio-button [value]="0">New</mat-radio-button>
+            <mat-radio-button [value]="1">Submitted</mat-radio-button>
+            <mat-radio-button [value]="2">Approved</mat-radio-button>
+            <mat-radio-button [value]="3">Rejected</mat-radio-button>
           </mat-radio-group>
         </div>
       </div>

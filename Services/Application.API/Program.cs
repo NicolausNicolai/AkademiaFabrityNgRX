@@ -1,6 +1,8 @@
 using Application.API.Extensions;
 using Application.API.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using System.Reflection;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -22,6 +24,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(Assembly.GetEntryAssembly());
 
 var app = builder.Build();
 app.Services.CreateScope().ServiceProvider.GetRequiredService<AppDbContext>().Database.Migrate();
