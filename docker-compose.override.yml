@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  application.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ConnectionStrings__ApplicationDb=Server=application-db;Database=ApplicationDb;User Id=sa; Password=PaluszkiSloneLubZMakiem
+    ports:
+      - "80"
+      - "443"
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  application.db:
+    container_name: application-db
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=PaluszkiSloneLubZMakiem
+      - MSSQL_PID=Express
+    restart: always
+    ports:
+        - "1433:1433"
+    volumes:
+      - ${APPDATA}/application-db-data:/var/lib/mssqlql/data

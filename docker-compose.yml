@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  application.api:
+    image: ${DOCKER_REGISTRY-}applicationapi
+    build:
+      context: .
+      dockerfile: Services/Application.API/Dockerfile
+
+  application.db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+
