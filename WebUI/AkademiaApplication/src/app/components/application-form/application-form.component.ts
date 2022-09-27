@@ -5,6 +5,7 @@ import { ApplicationStatus } from 'src/app/models/applicationStatus';
 import { ApplicationApiService } from 'src/app/services/application-api.service';
 import { Application } from 'src/app/models/application';
 import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-application-form',
@@ -29,7 +30,8 @@ export class ApplicationFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
     private api: ApplicationApiService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private location: Location) {
   }
 
   ngOnInit()
@@ -41,7 +43,7 @@ export class ApplicationFormComponent implements OnInit {
       if (id != undefined)
       {
         console.log(`Zmieniono ID: ${id}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!`);
-
+        this.isNew = false;
       }
 
     });
@@ -56,8 +58,11 @@ export class ApplicationFormComponent implements OnInit {
       this.appForm.disable();
       this.api.saveApplication(this.appForm.value).subscribe(r => {
         console.log(r);
-        this.appForm.setValue(r);
+        this.location.replaceState(`app-form/${r.id}`);
         this.appForm.enable();
+        this.isNew = false;
+        this.buildForm(r);
+        console.log("isnew", this.isNew);
       });
     }
   }
@@ -67,16 +72,12 @@ export class ApplicationFormComponent implements OnInit {
     this.appForm = this.fb.group({
       id: new FormControl<number|null>({value: application.id, disabled: true}, Validators.required),
       number: new FormControl<string|null>({value: application.number, disabled: true}, Validators.required),
-      title: new FormControl<string|null>({value: application.title, disabled: false}, Validators.required),
-      description: new FormControl<string|null>({value: application.description, disabled: false}, Validators.required),
-      applicantsName: new FormControl<string|null>({value: application.applicantsName, disabled: false}, Validators.required),
+      title: new FormControl<string|null>({value: application.title, disabled: !this.isNew}, Validators.required),
+      description: new FormControl<string|null>({value: application.description, disabled: !this.isNew}, Validators.required),
+      applicantsName: new FormControl<string|null>({value: application.applicantsName, disabled: !this.isNew}, Validators.required),
       createdDate: new FormControl<Date|null>({value: application.createdDate, disabled: true}, Validators.required),
       applicationStatus: new FormControl<ApplicationStatus | null>({value: application.applicationStatus, disabled: true}, Validators.required),
       completionDate: new FormControl<Date|null>({value: application.completionDate, disabled: true}, Validators.required)
     });
-
-    this.isNew = false;
-    // Tutaj po załadowaniu zmień route na taki żeby było w nim ID nowozapisanego 
   }
-
 }

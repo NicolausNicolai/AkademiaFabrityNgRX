@@ -10,7 +10,7 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="half-width">
-            <input matInput placeholder="Application number" formControlName="number">
+            <input matInput placeholder="Application number" formControlName="number" enable="false">
           </mat-form-field>
         </div>
       </div>
@@ -34,20 +34,6 @@
           </mat-form-field>
         </div>
       </div>
-      <!-- <div class="row" *ngIf="!hasUnitNumber">
-        <div class="col">
-          <button mat-button type="button" (click)="hasUnitNumber = !hasUnitNumber">
-            + Add C/O, Apt, Suite, Unit
-          </button>
-        </div>
-      </div>
-      <div class="row" *ngIf="hasUnitNumber">
-        <div class="col">
-          <mat-form-field class="full-width">
-            <textarea matInput placeholder="Address 2" formControlName="address2"></textarea>
-          </mat-form-field>
-        </div>
-      </div> -->
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
@@ -57,18 +43,6 @@
             </mat-error>
           </mat-form-field>
         </div>
-        <!-- <div class="col">
-          <mat-form-field class="full-width">
-            <mat-select placeholder="createdDate" formControlName="createdDate">
-              <mat-option *ngFor="let state of states" [value]="state.abbreviation">
-                {{ state.name }}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="appForm.controls['state'].hasError('required')">
-              State is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-        </div> -->
       </div>
 
       <div class="row">
@@ -94,7 +68,7 @@
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="primary" type="submit">Submit</button>
+      <button #Submit mat-raised-button color="primary" type="submit" [disabled]="!isNew">Submit</button>
     </mat-card-actions>
   </mat-card>
 </form>

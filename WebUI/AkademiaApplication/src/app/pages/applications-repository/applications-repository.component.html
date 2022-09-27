@@ -1,0 +1,41 @@
+<div class="courses-panel">
+
+    <div class="header">
+  
+      <h2 class="title">All Applications</h2>
+  
+      <button mat-mini-fab>
+        <!-- <mat-icon class="add-course-btn" (click)="onAddCourse()">add</mat-icon> -->
+        <mat-icon class="add-course-btn" routerLink="/app-form" >add</mat-icon>
+      </button>
+  
+    </div>
+  
+    <mat-tab-group>
+  
+        <mat-tab label="New">
+            <!-- <courses-card-list (courseChanged)="reload()"
+              [courses]="beginnerCourses$ | async"> -->
+              <app-application-list [dataSource]="newApplications"></app-application-list>
+          </mat-tab>
+          <mat-tab label="Submitted">
+            <!-- <courses-card-list (courseChanged)="reload()"
+              [courses]="beginnerCourses$ | async"> -->
+              <app-application-list [dataSource]="submittedApplications"></app-application-list>
+          </mat-tab>
+          <mat-tab label="Accepted">
+            <!-- <courses-card-list (courseChanged)="reload()"
+              [courses]="beginnerCourses$ | async"> -->
+              <app-application-list [dataSource]="aprovedApplications"></app-application-list>
+          </mat-tab>
+          <mat-tab label="Rejected">
+            <!-- <courses-card-list (courseChanged)="reload()"
+              [courses]="beginnerCourses$ | async"> -->
+              <app-application-list [dataSource]="rejectedApplications"></app-application-list>
+          </mat-tab>
+          
+  
+    </mat-tab-group>
+  
+  
+  </div>

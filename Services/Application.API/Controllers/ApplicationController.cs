@@ -45,6 +45,7 @@ namespace Application.API.Controllers
             var now = DateTime.Now;
 
             applicationDto.CreatedDate = now;
+            applicationDto.ApplicationStatus = Domain.ApplicationStatus.Submitted;
             applicationDto.Number = $"WN/{now.Year}/{now.Month}/{now.Day}/{now.Ticks}";
 
             var application = _mapper.Map<Domain.Application>(applicationDto);

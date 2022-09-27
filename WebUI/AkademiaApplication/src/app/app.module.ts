@@ -22,13 +22,16 @@ import { ApplicationListComponent } from './components/application-list/applicat
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { ApplicationsRepositoryComponent } from './pages/applications-repository/applications-repository.component';
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
     ApplicationFormComponent,
-    ApplicationListComponent
+    ApplicationListComponent,
+    ApplicationsRepositoryComponent,
   ],
   imports: [
     HttpClientModule,
@@ -48,7 +51,8 @@ import { MatSortModule } from '@angular/material/sort';
     ReactiveFormsModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatTabsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
