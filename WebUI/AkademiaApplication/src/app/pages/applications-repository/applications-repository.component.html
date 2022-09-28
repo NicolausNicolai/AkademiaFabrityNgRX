@@ -16,22 +16,22 @@
         <mat-tab label="New">
             <!-- <courses-card-list (courseChanged)="reload()"
               [courses]="beginnerCourses$ | async"> -->
-              <app-application-list [dataSource]="newApplications"></app-application-list>
+              <app-application-list (dataChanged)="dataChanged()" [dataSource]="(newApplications$ | async)!"></app-application-list>
           </mat-tab>
           <mat-tab label="Submitted">
             <!-- <courses-card-list (courseChanged)="reload()"
               [courses]="beginnerCourses$ | async"> -->
-              <app-application-list [dataSource]="submittedApplications"></app-application-list>
+              <app-application-list (dataChanged)="dataChanged()" [dataSource]="(submittedApplications$ | async)!"></app-application-list>
           </mat-tab>
           <mat-tab label="Accepted">
             <!-- <courses-card-list (courseChanged)="reload()"
               [courses]="beginnerCourses$ | async"> -->
-              <app-application-list [dataSource]="aprovedApplications"></app-application-list>
+              <app-application-list (dataChanged)="dataChanged()" [dataSource]="(aprovedApplications$ | async)!"></app-application-list>
           </mat-tab>
           <mat-tab label="Rejected">
             <!-- <courses-card-list (courseChanged)="reload()"
               [courses]="beginnerCourses$ | async"> -->
-              <app-application-list [dataSource]="rejectedApplications"></app-application-list>
+              <app-application-list (dataChanged)="dataChanged()" [dataSource]="(rejectedApplications$ | async)!"></app-application-list>
           </mat-tab>
           
   

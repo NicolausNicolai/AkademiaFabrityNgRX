@@ -21,10 +21,9 @@ export class ApplicationFormComponent implements OnInit {
     description: new FormControl<string|null>({value: null, disabled: false}, Validators.required),
     applicantsName: new FormControl<string|null>({value: null, disabled: false}, Validators.required),
     createdDate: new FormControl<Date|null>({value: null, disabled: true}, Validators.required),
-    applicationStatus: new FormControl<ApplicationStatus>({value: ApplicationStatus.New, disabled: true}, Validators.required),
+    applicationStatus: new FormControl<ApplicationStatus>({value: ApplicationStatus.New, disabled: false}, Validators.required),
     completionDate: new FormControl<Date|null>({value: null, disabled: true}, Validators.required)
   });
-
 
   public isNew : boolean = true;
 
@@ -42,8 +41,10 @@ export class ApplicationFormComponent implements OnInit {
 
       if (id != undefined)
       {
-        console.log(`Zmieniono ID: ${id}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!`);
-        this.isNew = false;
+        this.api.getApplication(id).subscribe(r => {
+          this.buildForm(r);
+          this.isNew = r.applicationStatus == ApplicationStatus.New;
+        })
       }
 
     });
@@ -60,7 +61,7 @@ export class ApplicationFormComponent implements OnInit {
         console.log(r);
         this.location.replaceState(`app-form/${r.id}`);
         this.appForm.enable();
-        this.isNew = false;
+        this.isNew = r.applicationStatus == ApplicationStatus.New;
         this.buildForm(r);
         console.log("isnew", this.isNew);
       });
@@ -69,6 +70,7 @@ export class ApplicationFormComponent implements OnInit {
 
   buildForm(application: Application)
   {
+    const isAppStatusModificationDisabled = application.applicationStatus != ApplicationStatus.New;
     this.appForm = this.fb.group({
       id: new FormControl<number|null>({value: application.id, disabled: true}, Validators.required),
       number: new FormControl<string|null>({value: application.number, disabled: true}, Validators.required),
@@ -76,7 +78,7 @@ export class ApplicationFormComponent implements OnInit {
       description: new FormControl<string|null>({value: application.description, disabled: !this.isNew}, Validators.required),
       applicantsName: new FormControl<string|null>({value: application.applicantsName, disabled: !this.isNew}, Validators.required),
       createdDate: new FormControl<Date|null>({value: application.createdDate, disabled: true}, Validators.required),
-      applicationStatus: new FormControl<ApplicationStatus | null>({value: application.applicationStatus, disabled: true}, Validators.required),
+      applicationStatus: new FormControl<ApplicationStatus | null>({value: application.applicationStatus, disabled: isAppStatusModificationDisabled }, Validators.required),
       completionDate: new FormControl<Date|null>({value: application.completionDate, disabled: true}, Validators.required)
     });
   }

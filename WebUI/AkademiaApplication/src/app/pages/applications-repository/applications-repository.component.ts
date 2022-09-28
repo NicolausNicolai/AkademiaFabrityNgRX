@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { map, Observable, shareReplay, tap } from 'rxjs';
 import { ApplicationApiService } from 'src/app/services/application-api.service';
 import { Application } from 'src/app/models/application'
 import { ApplicationStatus } from 'src/app/models/applicationStatus';
@@ -15,28 +15,51 @@ export class ApplicationsRepositoryComponent implements OnInit {
   // acceptedApplications$!: Observable<Array<Application>>
   // rejectedApplications$!: Observable<Array<Application>>
 
-  newApplications: Array<Application> = [];
-  submittedApplications: Array<Application> = [];
-  aprovedApplications: Array<Application> = [];
-  rejectedApplications: Array<Application> = [];
+  public newApplications$!: Observable<Array<Application>>;
+  public submittedApplications$!: Observable<Array<Application>>;
+  public aprovedApplications$!: Observable<Array<Application>>;
+  public rejectedApplications$!: Observable<Array<Application>>;
 
   
-  constructor(private api: ApplicationApiService) { }
+  constructor(private api: ApplicationApiService) { 
+    this.reload();
+  }
 
-  reload() {
-    this.api.getApplications()
-    .subscribe(r => {
-      console.log(r);
+  reload()
+  {
+    const applications$ = this.api.getApplications()
+      .pipe(
+        tap(r => console.log(r)),
+        shareReplay()
+      );
 
-      this.newApplications = r.filter(a => a.applicationStatus === ApplicationStatus.New);
-      this.submittedApplications = r.filter(a => a.applicationStatus === ApplicationStatus.Submitted);
-      this.aprovedApplications = r.filter(a => a.applicationStatus === ApplicationStatus.Approved);
-      this.rejectedApplications = r.filter(a => a.applicationStatus === ApplicationStatus.Rejected);
-    });
-}
+      this.newApplications$ = applications$
+      .pipe(
+        map(apps => apps.filter(app => app.applicationStatus == ApplicationStatus.New))
+      );
+
+      this.submittedApplications$ = applications$
+      .pipe(
+        map(apps => apps.filter(app => app.applicationStatus == ApplicationStatus.Submitted))
+      );
+
+      this.aprovedApplications$ = applications$
+      .pipe(
+        map(apps => apps.filter(app => app.applicationStatus == ApplicationStatus.Approved))
+      );
+
+      this.rejectedApplications$ = applications$
+      .pipe(
+        map(apps => apps.filter(app => app.applicationStatus == ApplicationStatus.Rejected))
+      );
+  }
+
+  dataChanged()
+  {
+    this.reload();
+  }
 
   ngOnInit(): void {
-    this.reload();
   }
 
 }
