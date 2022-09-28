@@ -31,7 +31,7 @@ export class ApplicationListComponent {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<Application>;
 
-  expandedElement: PeriodicElement | null = null;
+  public expandedElement: Application | null = null;
   columnsToDisplay = ['id', 'number', 'title', 'applicationStatus', 'aplicantsName', 'Actions'];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
 
@@ -39,6 +39,7 @@ export class ApplicationListComponent {
   public applicationStatus = ApplicationStatus;
 
   constructor(private api: ApplicationApiService) {
+    console.log("Tworzę ApplicationListComponent");
   }
 
   onApproveApplication(id: number)
@@ -52,8 +53,13 @@ export class ApplicationListComponent {
     this.api.rejectApplication(id);
     this.dataChanged.emit();
   }
+
+test(element: any)
+{
+  const ev = element == this.expandedElement ? 'example-element-detail-expanded' : 'example-element-detail-colapsed';
+  console.log(element, ev);
+  return ev;
 }
 
-export interface PeriodicElement {
-  description: string;
 }
+
