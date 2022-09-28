@@ -1,33 +1,35 @@
 <div class="mat-elevation-z8">
-  <table mat-table class="full-width-table" matSort aria-label="Elements" [dataSource]="dataSource">
+  <table mat-table class="full-width-table" aria-label="Elements" [dataSource]="dataSource" multiTemplateDataRows>
     <!-- Id Column -->
     <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+      <th mat-header-cell *matHeaderCellDef>Id</th>
       <td mat-cell *matCellDef="let row">{{row.id}}</td>
     </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="number">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Number</th>
+      <th mat-header-cell *matHeaderCellDef>Number</th>
       <td mat-cell *matCellDef="let row">{{row.number}}</td>
     </ng-container>
 
     <ng-container matColumnDef="title">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+      <th mat-header-cell *matHeaderCellDef>Title</th>
       <td mat-cell *matCellDef="let row">{{row.title}}</td>
     </ng-container>
 
     <ng-container matColumnDef="applicationStatus">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+      <th mat-header-cell *matHeaderCellDef>Status</th>
       <td mat-cell *matCellDef="let row">{{applicationStatus[row.applicationStatus]}}</td>
     </ng-container>
 
     <ng-container matColumnDef="aplicantsName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Aplicant Name</th>
+      <th mat-header-cell *matHeaderCellDef>Aplicant Name</th>
       <td mat-cell *matCellDef="let row">{{row.aplicantsName}}</td>
     </ng-container>
 
-    <ng-container matColumnDef="description">
+
+
+    <ng-container matColumnDef="expand">
       <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
       <td mat-cell *matCellDef="let element">
         <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
@@ -36,21 +38,20 @@
         </button>
       </td>
     </ng-container>
-  <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-  <ng-container matColumnDef="expandedDetail">
-    <td mat-cell *matCellDef="let element" [attr.colspan]="1">
-      <div class="example-element-detail"
-           [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-        <div class="example-element-description">
-          {{element.description}}
+  
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+        <div class="example-element-detail"
+             [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+          <div class="example-element-description">
+            {{element.description}}
+          </div>
         </div>
-      </div>
-    </td>
-  </ng-container>
-
-
+      </td>
+    </ng-container>
     <ng-container matColumnDef="Actions">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let row">
         <!-- // Let edition -->
         <button mat-icon-button *ngIf="row.applicationStatus==applicationStatus.New">
@@ -65,13 +66,21 @@
           <!-- <mat-icon class="add-course-btn" (click)="onAddCourse()">add</mat-icon> -->
           <mat-icon (click)="onRejectApplication(row.id)">not_interested</mat-icon>
         </button>
-
-        
-
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+    <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+        class="example-element-row"
+        [class.example-expanded-row]="expandedElement === element"
+        (click)="expandedElement = expandedElement === element ? null : element">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+    <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['description']" class="example-detail-row"></tr> -->
+    
   </table>
 </div>

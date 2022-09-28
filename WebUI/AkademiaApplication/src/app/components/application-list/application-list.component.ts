@@ -1,3 +1,4 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -9,7 +10,14 @@ import { ApplicationApiService } from 'src/app/services/application-api.service'
 @Component({
   selector: 'app-application-list',
   templateUrl: './application-list.component.html',
-  styleUrls: ['./application-list.component.css']
+  styleUrls: ['./application-list.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class ApplicationListComponent {
 
@@ -24,7 +32,10 @@ export class ApplicationListComponent {
   @ViewChild(MatTable) table!: MatTable<Application>;
 
   expandedElement: PeriodicElement | null = null;
-  displayedColumns = ['id', 'number', 'title', 'applicationStatus', 'aplicantsName', 'Actions','description'];
+  columnsToDisplay = ['id', 'number', 'title', 'applicationStatus', 'aplicantsName', 'Actions'];
+  columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
+
+
   public applicationStatus = ApplicationStatus;
 
   constructor(private api: ApplicationApiService) {
