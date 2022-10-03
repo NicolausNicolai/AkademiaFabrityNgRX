@@ -5,7 +5,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import { LoadingService } from 'src/app/services/loading.service';
 import { AppState } from 'src/app/store';
 import { select, State } from '@ngrx/store';
-import { isLoading } from 'src/app/store/application.selectors';
+import { isLoadingSelector } from 'src/app/store/application.selectors';
 
 @Component({
   selector: 'app-nav',
@@ -28,7 +28,7 @@ export class NavComponent {
 
       this.isLoading$ = this.store
       .pipe(
-          select(isLoading)
+          select(isLoadingSelector)
       );
     
 

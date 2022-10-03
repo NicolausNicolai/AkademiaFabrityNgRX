@@ -5,7 +5,12 @@ import * as fromApplication from './application.reducer';
 export const selectApplicationState =
     createFeatureSelector<ApplicationState>(fromApplication.applicationFeatureKey);
 
-export const isLoading = createSelector(
+export const isLoadingSelector = createSelector(
     selectApplicationState,
     appState =>  appState.isLoading
+);
+
+export const applicationsSelector = createSelector(
+    selectApplicationState,
+    appState =>  appState.applications
 );

@@ -19,7 +19,11 @@ export const reducer = createReducer(
   initialState,
   on(ApplicationActions.LoadAllApplications, (state, action) => 
       state = { ...state, isLoading: true}
+  ),
+  on(ApplicationActions.LoadAllApplicationsSuccess, (state, action) => 
+      state = { ...state, applications: action.data, isLoading: false}
   )
+
 );
 
 

@@ -6,6 +6,7 @@ import { ApplicationStatus } from 'src/app/models/applicationStatus';
 import { ApplicationActions } from 'src/app/store/application.actiontypes';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store';
+import { applicationsSelector } from 'src/app/store/application.selectors';
 @Component({
   selector: 'app-applications-repository',
   templateUrl: './applications-repository.component.html',
@@ -39,8 +40,11 @@ export class ApplicationsRepositoryComponent implements OnInit {
     this.store.dispatch(ApplicationActions.LoadAllApplications());
 
     // (2)
-    var emptyApps: Array<Application> = [];
-    const applications$ = of(emptyApps);
+    // var emptyApps: Array<Application> = [];
+    // const applications$ = of(emptyApps);
+
+    // (2)
+    const applications$ = this.store.select(applicationsSelector);
 
     // const applications$ = this.api.getApplications()
     //   .pipe(
