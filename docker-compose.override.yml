@@ -7,8 +7,8 @@ services:
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ConnectionStrings__ApplicationDb=Server=application-db;Database=ApplicationDb;User Id=sa; Password=PaluszkiSloneLubZMakiem
     ports:
-      - "80"
-      - "443"
+      - "8001:80"
+      - "8003:443"
     volumes:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 

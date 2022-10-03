@@ -57,9 +57,9 @@ namespace Application.API.Controllers
             }
             else
             {
-                applicationDto.CreatedDate = now;
-                applicationDto.ApplicationStatus = Domain.ApplicationStatus.Submitted;
-                applicationDto.Number = $"WN/{now.Year}/{now.Month}/{now.Day}/{now.Ticks}";
+                application.CreatedDate = now;
+                application.ApplicationStatus = Domain.ApplicationStatus.Submitted;
+                application.Number = $"WN/{now.Year}/{now.Month}/{now.Day}/{now.Ticks}";
             }
 
             if (application.ApplicationStatus != Domain.ApplicationStatus.New && application.ApplicationStatus != Domain.ApplicationStatus.Submitted)
