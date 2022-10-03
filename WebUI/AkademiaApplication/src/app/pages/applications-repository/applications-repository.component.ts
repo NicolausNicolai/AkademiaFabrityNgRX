@@ -22,6 +22,9 @@ export class ApplicationsRepositoryComponent implements OnInit {
 
   
   constructor(private api: ApplicationApiService) { 
+  }
+
+  ngOnInit(): void {
     this.reload();
   }
 
@@ -29,7 +32,6 @@ export class ApplicationsRepositoryComponent implements OnInit {
   {
     const applications$ = this.api.getApplications()
       .pipe(
-        tap(r => console.log(r)),
         shareReplay()
       );
 
@@ -58,8 +60,4 @@ export class ApplicationsRepositoryComponent implements OnInit {
   {
     this.reload();
   }
-
-  ngOnInit(): void {
-  }
-
 }
