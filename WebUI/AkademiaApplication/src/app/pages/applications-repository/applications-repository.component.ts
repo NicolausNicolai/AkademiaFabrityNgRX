@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { map, Observable, shareReplay, tap } from 'rxjs';
+import { from, map, Observable, of, shareReplay, tap } from 'rxjs';
 import { ApplicationApiService } from 'src/app/services/application-api.service';
 import { Application } from 'src/app/models/application'
 import { ApplicationStatus } from 'src/app/models/applicationStatus';
@@ -34,14 +34,18 @@ export class ApplicationsRepositoryComponent implements OnInit {
 
   reload()
   {
-    
+
+    // (1)
     this.store.dispatch(ApplicationActions.LoadAllApplications());
 
+    // (2)
+    var emptyApps: Array<Application> = [];
+    const applications$ = of(emptyApps);
 
-    const applications$ = this.api.getApplications()
-      .pipe(
-        shareReplay()
-      );
+    // const applications$ = this.api.getApplications()
+    //   .pipe(
+    //     shareReplay()
+    //   );
 
       this.newApplications$ = applications$
       .pipe(

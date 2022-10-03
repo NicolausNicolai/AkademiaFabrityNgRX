@@ -3,6 +3,9 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { LoadingService } from 'src/app/services/loading.service';
+import { AppState } from 'src/app/store';
+import { select, State } from '@ngrx/store';
+import { isLoading } from 'src/app/store/application.selectors';
 
 @Component({
   selector: 'app-nav',
@@ -11,22 +14,29 @@ import { LoadingService } from 'src/app/services/loading.service';
 })
 export class NavComponent {
 
-  public isLoading = false;
+  public isLoading$: Observable<boolean>;
+
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
       shareReplay()
     );
 
-
-
   constructor(private breakpointObserver: BreakpointObserver,
-    public loadingService: LoadingService) {
-      loadingService.isLoading$.subscribe(isLoading => {
-          setTimeout(() => {
-              this.isLoading = isLoading;
-          });
-      });
+    public loadingService: LoadingService,
+    private store: State<AppState>) {
+
+      this.isLoading$ = this.store
+      .pipe(
+          select(isLoading)
+      );
+    
+
+      // loadingService.isLoading$.subscribe(isLoading => {
+      //     setTimeout(() => {
+      //         this.isLoading = isLoading;
+      //     });
+      // });
     }
 
 }

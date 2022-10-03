@@ -21,7 +21,7 @@
       </button>
       <span>AkademiaApplication</span>
     </mat-toolbar>
-    <div class="center" *ngIf="isLoading">
+    <div class="center" *ngIf="isLoading$| async">
       <mat-spinner></mat-spinner>
     </div>
     <router-outlet></router-outlet>
