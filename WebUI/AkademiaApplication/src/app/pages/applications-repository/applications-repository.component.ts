@@ -3,6 +3,9 @@ import { map, Observable, shareReplay, tap } from 'rxjs';
 import { ApplicationApiService } from 'src/app/services/application-api.service';
 import { Application } from 'src/app/models/application'
 import { ApplicationStatus } from 'src/app/models/applicationStatus';
+import { ApplicationActions } from 'src/app/store/application.actiontypes';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store';
 @Component({
   selector: 'app-applications-repository',
   templateUrl: './applications-repository.component.html',
@@ -21,7 +24,8 @@ export class ApplicationsRepositoryComponent implements OnInit {
   public rejectedApplications$!: Observable<Array<Application>>;
 
   
-  constructor(private api: ApplicationApiService) { 
+  constructor(private api: ApplicationApiService,
+    private store: Store<AppState>) { 
   }
 
   ngOnInit(): void {
@@ -30,6 +34,10 @@ export class ApplicationsRepositoryComponent implements OnInit {
 
   reload()
   {
+    
+    this.store.dispatch(ApplicationActions.LoadAllApplications());
+
+
     const applications$ = this.api.getApplications()
       .pipe(
         shareReplay()
