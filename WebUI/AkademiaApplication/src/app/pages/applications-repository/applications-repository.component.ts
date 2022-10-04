@@ -25,13 +25,15 @@ export class ApplicationsRepositoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.reload();
+    this.reload(false);
   }
 
-  reload()
+  reload(force :boolean)
   {
-
-    this.store.dispatch(loadApplications());
+    this.store.select(selectApplicationsLoaded).subscribe(ial => {
+      if (!ial || force)
+        this.store.dispatch(loadApplications());
+    });
 
     const applications$ = this.store.select(selectApplications);
     
@@ -58,6 +60,6 @@ export class ApplicationsRepositoryComponent implements OnInit {
 
   dataChanged()
   {
-    this.reload();
+    this.reload(true);
   }
 }
