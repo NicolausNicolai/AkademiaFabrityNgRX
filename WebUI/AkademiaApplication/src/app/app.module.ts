@@ -25,6 +25,12 @@ import { MatSortModule } from '@angular/material/sort';
 import { ApplicationsRepositoryComponent } from './pages/applications-repository/applications-repository.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { StoreModule } from '@ngrx/store';
+import { reducers} from './store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { EffectsModule } from '@ngrx/effects';
+import { ApplicationEffects } from './store/application.effects';
 
 @NgModule({
   declarations: [
@@ -54,7 +60,10 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatPaginatorModule,
     MatSortModule,
     MatTabsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    StoreModule.forRoot(reducers),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    EffectsModule.forRoot([ApplicationEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]

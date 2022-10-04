@@ -57,7 +57,7 @@ export class ApplicationListComponent {
 test(element: any)
 {
   const ev = element == this.expandedElement ? 'example-element-detail-expanded' : 'example-element-detail-colapsed';
-  console.log(element, ev);
+  //console.log(element, ev);
   return ev;
 }
 

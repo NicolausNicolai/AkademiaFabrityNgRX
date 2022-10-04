@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { map, Observable, shareReplay, tap } from 'rxjs';
+import { map, Observable, of, shareReplay, tap } from 'rxjs';
 import { ApplicationApiService } from 'src/app/services/application-api.service';
 import { Application } from 'src/app/models/application'
 import { ApplicationStatus } from 'src/app/models/applicationStatus';
+import { AppState } from 'src/app/store';
+import { Store } from '@ngrx/store';
+import { loadApplications, loadApplicationsFailure } from 'src/app/store/application.actions';
+import { selectApplications } from 'src/app/store/application.selectors';
 @Component({
   selector: 'app-applications-repository',
   templateUrl: './applications-repository.component.html',
@@ -10,18 +14,14 @@ import { ApplicationStatus } from 'src/app/models/applicationStatus';
 })
 export class ApplicationsRepositoryComponent implements OnInit {
 
-  // newApplications$!: Observable<Array<Application>>
-  // sobmittedApplications$!: Observable<Array<Application>>
-  // acceptedApplications$!: Observable<Array<Application>>
-  // rejectedApplications$!: Observable<Array<Application>>
-
   public newApplications$!: Observable<Array<Application>>;
   public submittedApplications$!: Observable<Array<Application>>;
   public aprovedApplications$!: Observable<Array<Application>>;
   public rejectedApplications$!: Observable<Array<Application>>;
 
   
-  constructor(private api: ApplicationApiService) { 
+  constructor(private api: ApplicationApiService,
+    private store: Store<AppState>) { 
   }
 
   ngOnInit(): void {
@@ -30,11 +30,11 @@ export class ApplicationsRepositoryComponent implements OnInit {
 
   reload()
   {
-    const applications$ = this.api.getApplications()
-      .pipe(
-        shareReplay()
-      );
 
+    this.store.dispatch(loadApplications());
+
+    const applications$ = this.store.select(selectApplications);
+    
       this.newApplications$ = applications$
       .pipe(
         map(apps => apps.filter(app => app.applicationStatus == ApplicationStatus.New))
