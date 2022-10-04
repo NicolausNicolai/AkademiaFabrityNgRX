@@ -4,9 +4,9 @@ import { ApplicationApiService } from 'src/app/services/application-api.service'
 import { Application } from 'src/app/models/application'
 import { ApplicationStatus } from 'src/app/models/applicationStatus';
 import { AppState } from 'src/app/store';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { loadApplications, loadApplicationsFailure } from 'src/app/store/application.actions';
-import { selectApplications } from 'src/app/store/application.selectors';
+import { selectApplications, selectApplicationsLoaded } from 'src/app/store/application.selectors';
 @Component({
   selector: 'app-applications-repository',
   templateUrl: './applications-repository.component.html',

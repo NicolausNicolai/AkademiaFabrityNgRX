@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, tap } from 'rxjs';
+import { catchError, map, mergeMap, of, tap } from 'rxjs';
 import { ApplicationApiService } from '../services/application-api.service';
-import { loadApplications, loadApplicationsSuccess } from './application.actions';
+import { loadApplications, loadApplicationsFailure, loadApplicationsSuccess } from './application.actions';
 
 
 
@@ -18,7 +18,8 @@ export class ApplicationEffects {
         ofType(loadApplications),
         tap(d => console.log("In effect", d)),
         mergeMap(a => this.api.getApplications()),
-        map(a => loadApplicationsSuccess({data: a}))
+        map(a => loadApplicationsSuccess({data: a})),
+        catchError(error => of(loadApplicationsFailure({ error })))
       )
   )
 

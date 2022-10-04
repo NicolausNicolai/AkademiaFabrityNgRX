@@ -14,4 +14,9 @@ export const selectApplicationState =
         selectApplicationState,
         appState => appState.applications
     );
+
+    export const selectApplicationsLoaded = createSelector(
+        selectApplicationState,
+        appState => appState.applicationsLoaded
+    );
         
