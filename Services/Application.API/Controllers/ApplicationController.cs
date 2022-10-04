@@ -58,7 +58,7 @@ namespace Application.API.Controllers
             else
             {
                 application.CreatedDate = now;
-                application.ApplicationStatus = Domain.ApplicationStatus.Submitted;
+                //application.ApplicationStatus = Domain.ApplicationStatus.Submitted;
                 application.Number = $"WN/{now.Year}/{now.Month}/{now.Day}/{now.Ticks}";
             }
 

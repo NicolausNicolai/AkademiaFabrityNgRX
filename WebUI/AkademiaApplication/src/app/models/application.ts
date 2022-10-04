@@ -2,7 +2,7 @@ import { ApplicationStatus } from "./applicationStatus"
 
 export interface Application
 {
-    id: number | null
+    id: number | null 
     number: string | null
     title: string | null
     description: string | null

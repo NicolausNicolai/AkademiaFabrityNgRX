@@ -1,19 +1,24 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ApplicationStatus } from 'src/app/models/applicationStatus';
 import { ApplicationApiService } from 'src/app/services/application-api.service';
 import { Application } from 'src/app/models/application';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { AppState } from 'src/app/store';
+import { Store } from '@ngrx/store';
+import { loadApplication, newApplication, saveApplication } from 'src/app/store/application.actions';
+import { Subject, takeUntil } from 'rxjs';
+import { selectCurrentlyEditedApplication } from 'src/app/store/application.selectors';
 
 @Component({
   selector: 'app-application-form',
   templateUrl: './application-form.component.html',
   styleUrls: ['./application-form.component.css']
 })
-export class ApplicationFormComponent implements OnInit {
-
+export class ApplicationFormComponent implements OnInit, OnDestroy {
+  private destroy: Subject<boolean> = new Subject<boolean>();
   appForm = this.fb.group({
     id: new FormControl<number>({value: 0, disabled: true}, Validators.required),
     number: new FormControl<string|null>({value: null, disabled: true}, Validators.required),
@@ -26,11 +31,17 @@ export class ApplicationFormComponent implements OnInit {
   });
 
   public isNew : boolean = true;
+  private currentlyEditedApplication: Application | undefined = undefined;
 
   constructor(private fb: FormBuilder,
     private api: ApplicationApiService,
     private route: ActivatedRoute,
-    private location: Location) {
+    private location: Location,
+    private store: Store<AppState>) {
+  }
+  ngOnDestroy(): void {
+    this.destroy.next(true);
+    this.destroy.unsubscribe();
   }
 
   ngOnInit()
@@ -41,30 +52,51 @@ export class ApplicationFormComponent implements OnInit {
 
       if (id != undefined)
       {
-        this.api.getApplication(id).subscribe(r => {
-          this.buildForm(r);
-          this.isNew = r.applicationStatus == ApplicationStatus.New;
-        })
+        this.store.dispatch(loadApplication({id}));
+      }
+      else
+      {
+        this.store.dispatch(newApplication());
       }
 
     });
+
+    this.store.select(selectCurrentlyEditedApplication)
+      .pipe(takeUntil(this.destroy))
+        .subscribe(r => {
+          if (r !== undefined)
+          {
+            this.currentlyEditedApplication = r;
+            this.buildForm(r);
+            this.isNew = r?.applicationStatus == ApplicationStatus.New;
+          }
+          else
+          {
+            this.isNew = true;
+          }
+        })
   }
 
   onSubmit(): void {
 
-    this.appForm.controls.createdDate.setValue(new Date(Date.now()));
+    const application : Application = {
+      ...this.currentlyEditedApplication,
+      ...this.appForm.value 
+    } as Application
 
     if (this.appForm.valid)
     {
       this.appForm.disable();
-      this.api.saveApplication(this.appForm.value).subscribe(r => {
-        console.log(r);
-        this.location.replaceState(`app-form/${r.id}`);
-        this.appForm.enable();
-        this.isNew = r.applicationStatus == ApplicationStatus.New;
-        this.buildForm(r);
-        console.log("isnew", this.isNew);
-      });
+      this.store.dispatch(saveApplication({application}))
+
+      // this.api.saveApplication(this.appForm.value).subscribe(r => {
+      //   console.log(r);
+      //   this.location.replaceState(`app-form/${r.id}`);
+      //   this.appForm.enable();
+      //   this.isNew = r.applicationStatus == ApplicationStatus.New;
+      //   this.buildForm(r);
+      //   console.log("isnew", this.isNew);
+      // });
     }
   }
 

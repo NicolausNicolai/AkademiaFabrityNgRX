@@ -20,3 +20,7 @@ export const selectApplicationState =
         appState => appState.applicationsLoaded
     );
         
+    export const selectCurrentlyEditedApplication = createSelector(
+        selectApplicationState,
+        appState => appState.currentlyEditedApplication
+    );

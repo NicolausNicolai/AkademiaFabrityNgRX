@@ -25,37 +25,32 @@ export class ApplicationsRepositoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.reload(false);
+      const applications$ = this.store.select(selectApplications);
+      
+        this.newApplications$ = applications$
+        .pipe(
+          map(apps => apps.filter(app => app.applicationStatus == ApplicationStatus.New))
+        );
+  
+        this.submittedApplications$ = applications$
+        .pipe(
+          map(apps => apps.filter(app => app.applicationStatus == ApplicationStatus.Submitted))
+        );
+  
+        this.aprovedApplications$ = applications$
+        .pipe(
+          map(apps => apps.filter(app => app.applicationStatus == ApplicationStatus.Approved))
+        );
+  
+        this.rejectedApplications$ = applications$
+        .pipe(
+          map(apps => apps.filter(app => app.applicationStatus == ApplicationStatus.Rejected))
+        );
   }
 
-  reload(force :boolean)
+  public reload(force:boolean)
   {
-    this.store.select(selectApplicationsLoaded).subscribe(ial => {
-      if (!ial || force)
-        this.store.dispatch(loadApplications());
-    });
-
-    const applications$ = this.store.select(selectApplications);
-    
-      this.newApplications$ = applications$
-      .pipe(
-        map(apps => apps.filter(app => app.applicationStatus == ApplicationStatus.New))
-      );
-
-      this.submittedApplications$ = applications$
-      .pipe(
-        map(apps => apps.filter(app => app.applicationStatus == ApplicationStatus.Submitted))
-      );
-
-      this.aprovedApplications$ = applications$
-      .pipe(
-        map(apps => apps.filter(app => app.applicationStatus == ApplicationStatus.Approved))
-      );
-
-      this.rejectedApplications$ = applications$
-      .pipe(
-        map(apps => apps.filter(app => app.applicationStatus == ApplicationStatus.Rejected))
-      );
+    this.store.dispatch(loadApplications());
   }
 
   dataChanged()
