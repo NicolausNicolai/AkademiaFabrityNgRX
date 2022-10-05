@@ -5,7 +5,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
-      - ConnectionStrings__ApplicationDb=Server=application-db;Database=ApplicationDb;User Id=sa; Password=PaluszkiSloneLubZMakiem
+      - ConnectionStrings__ApplicationDb=Server=application-db;Database=ApplicationDb;User Id=sa; Password=P@luszk1S10neZM@k13m
     ports:
       - "8001:80"
       - "8003:443"
@@ -16,7 +16,7 @@ services:
     container_name: application-db
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=PaluszkiSloneLubZMakiem
+      - SA_PASSWORD=P@luszk1S10neZM@k13m
       - MSSQL_PID=Express
     restart: always
     ports:
