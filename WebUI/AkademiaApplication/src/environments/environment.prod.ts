@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  baseAddress: "http://angrxapp.ata6hybwe2djdsak.eastus.azurecontainer.io"
 };

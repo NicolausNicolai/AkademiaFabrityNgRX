@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Application } from '../models/application';
 import { LoadingService } from './loading.service';
 
@@ -8,7 +9,7 @@ import { LoadingService } from './loading.service';
   providedIn: 'root'
 })
 export class ApplicationApiService {
-  private baseAddress = "https://localhost:8003";
+  private baseAddress = environment.baseAddress;
 
   constructor(private http: HttpClient, private loadingService: LoadingService) { }
   getApplications() : Observable<Array<Application>>
