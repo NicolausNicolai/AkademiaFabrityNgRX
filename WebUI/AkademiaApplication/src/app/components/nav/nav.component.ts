@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store';
 import { selectApplicationsLoaded, selectIsLoading } from 'src/app/store/application.selectors';
 import { loadApplications } from 'src/app/store/application.actions';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-nav',
@@ -40,6 +41,12 @@ export class NavComponent implements OnInit {
     }
   ngOnInit(): void {
 
+
+  }
+
+  public getVersionInformation()
+  {
+    return environment.production? "version: prod" : "version: dev"
   }
 
 }

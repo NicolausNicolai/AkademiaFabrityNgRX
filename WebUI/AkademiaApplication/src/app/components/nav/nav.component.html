@@ -25,5 +25,8 @@
       <mat-spinner></mat-spinner>
     </div>
     <router-outlet></router-outlet>
-  </mat-sidenav-content>
+    <div class="footer" #footer>
+      {{getVersionInformation()}}
+    </div>
+    </mat-sidenav-content>
 </mat-sidenav-container>
