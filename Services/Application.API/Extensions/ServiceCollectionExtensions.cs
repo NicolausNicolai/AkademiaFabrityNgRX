@@ -21,8 +21,8 @@ namespace Application.API.Extensions
 
                     var retry = Policy.Handle<SqlException>()
                             .WaitAndRetry(
-                                retryCount: 5,
-                                sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(5/*Math.Pow(2, retryAttempt)*/), // 2,4,8,16,32 sc
+                                retryCount: 3,
+                                sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(2/*Math.Pow(2, retryAttempt)*/), // 2,4,8,16,32 sc
                                 onRetry: (exception, retryCount, context) =>
                                 {
                                     logger.LogError($"Retry {retryCount} of {context.PolicyKey} at {context.OperationKey}, due to: {exception}.");
@@ -38,7 +38,6 @@ namespace Application.API.Extensions
                 catch (SqlException ex)
                 {
                     logger.LogError(ex, "An error occurred while migrating the sql server database");
-                    throw ex;
                 }
             }
 
